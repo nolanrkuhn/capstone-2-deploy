@@ -9,7 +9,7 @@ function RecipeList() {
   useEffect(() => {
     async function fetchRecipes() {
       try {
-        const response = await fetch("${API_BASE_URL}/recipes");
+        const response = await fetch(`${API_BASE_URL}/recipes");
         const data = await response.json();
         setRecipes(data);
       } catch (error) {

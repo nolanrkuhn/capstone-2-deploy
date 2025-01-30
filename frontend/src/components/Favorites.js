@@ -9,7 +9,7 @@ function Favorites() {
   useEffect(() => {
     async function fetchFavorites() {
       try {
-        const response = await fetch("${API_BASE_URL}/favorites/1"); // Assuming user ID is 1 for simplicity
+        const response = await fetch(`${API_BASE_URL}/favorites/1"); // Assuming user ID is 1 for simplicity
         const data = await response.json();
         setFavorites(data);
       } catch (error) {

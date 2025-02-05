@@ -9,7 +9,8 @@ function MealPlans() {
   useEffect(() => {
     async function fetchMealPlans() {
       try {
-        const response = await fetch(`${API_BASE_URL}/mealPlans/1"); // Assuming user ID is 1 for simplicity
+        const response = await fetch(`${API_BASE_URL}/mealPlans/1`);
+        // Assuming user ID is 1 for simplicity
         const data = await response.json();
         setMealPlans(data);
       } catch (error) {

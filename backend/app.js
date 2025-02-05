@@ -1,34 +1,32 @@
-
 const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+
+// Security middleware
+app.use(helmet());
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// Placeholder Routes
-app.get('/', (req, res) => {
-  res.send('Recipe Manager Backend');
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// Routes for future CRUD operations
-const userRoutes = require('./routes/users');
-const recipeRoutes = require('./routes/recipes');
-const ingredientRoutes = require('./routes/ingredients');
-const favoriteRoutes = require('./routes/favorites');
-const mealPlanRoutes = require('./routes/mealPlans');
-
-app.use('/users', userRoutes);
-app.use('/recipes', recipeRoutes);
-app.use('/ingredients', ingredientRoutes);
-app.use('/favorites', favoriteRoutes);
-app.use('/mealPlans', mealPlanRoutes);
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
 
-module.exports = app;
+// ... rest of your code
